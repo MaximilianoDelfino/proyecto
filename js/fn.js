@@ -167,3 +167,22 @@ if (verificaEdad){
         }
     })
 }
+
+
+let comparacion = document.getElementById('comparar')
+
+if (comparacion){
+    comparacion.addEventListener("click",function(){
+        let n1 = Number(document.getElementById('num1').value);
+        let n2 = Number(document.getElementById('num2').value);
+        if (n1>n2) {
+            document.getElementById('comparado').innerHTML = n1 + ' es mayor que ' + n2;
+        };
+if (n1<n2) {
+            document.getElementById('comparado').innerHTML = n2 + ' es mayor que ' + n1;
+        };
+if (n1===n2) {
+            document.getElementById('comparado').innerHTML = n1 + ' es igual a ' + n2;
+        };      
+    })
+}
