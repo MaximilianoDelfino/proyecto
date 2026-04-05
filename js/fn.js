@@ -1,13 +1,21 @@
 let saludar = document.getElementById('saludo')
+let holaNom = document.getElementById('holaNomb')
+let reconocedorDato = document.getElementById('lectorDato')
+let hazCuenta = document.getElementById('haceCuenta')
+let sumando = document.getElementById('sumar')
+let restando = document.getElementById('resta')
+let multiplicando = document.getElementById('multiplicar')
+let dividiendo = document.getElementById('dividir')
+let clasificando = document.getElementById('clasificar')
+let verificaPar = document.getElementById('parVerifica')
+let verificaEdad = document.getElementById('verificarEdad')
+let comparacion = document.getElementById('comparar')
 
 if (saludar) {
     saludar.addEventListener("click",function holaMundo(){
         alert("hola mundo");
     })
 }
-
-
-let holaNom = document.getElementById('holaNomb')
 
 if (holaNom) {
     holaNom.addEventListener("click", function(){
@@ -21,9 +29,6 @@ if (holaNom) {
     })
 }
 
-
-let reconocedorDato = document.getElementById('lectorDato')
-
 if (reconocedorDato) {
     reconocedorDato.addEventListener("click", function(){
         let datoActual= document.getElementById('dato').value;
@@ -33,16 +38,13 @@ if (reconocedorDato) {
         if (isNaN(datoActual) || datoActual === "") {
             esNumero = "No es número";
         } else {
-            esNumero= "Es un número"
+            esNumero= "Es un número";
         }
         
         let mensajeDato = `Tipo: ${tipoDato} - ${esNumero}`;
         document.getElementById("esNum").innerHTML = mensajeDato;
     })
 }
-
-
-let hazCuenta = document.getElementById('haceCuenta')
 
 if (hazCuenta) {
     hazCuenta.addEventListener("click", function(){
@@ -52,9 +54,6 @@ if (hazCuenta) {
     })
 }
 
-
-let sumando = document.getElementById('sumar')
-
 if (sumando) {
     sumando.addEventListener("click", function(){
         let n1 = Number(document.getElementById('num1').value);
@@ -63,8 +62,6 @@ if (sumando) {
         document.getElementById("resultadoSuma").innerHTML = resultadoSumando;
     })
 }
-
-let restando = document.getElementById('resta')
 
 if (restando) {
     restando.addEventListener("click", function(){
@@ -83,9 +80,6 @@ if (restando) {
     })
 }
 
-
-let multiplicando = document.getElementById('multiplicar')
-
 if (multiplicando) {
     multiplicando.addEventListener("click",function(){
         let n1 = Number(document.getElementById('num1').value);
@@ -100,9 +94,6 @@ if (multiplicando) {
     })
 }
 
-
-let dividiendo = document.getElementById('dividir')
-
 if (dividiendo) {
     dividiendo.addEventListener("click",function(){
         let n1 = Number(document.getElementById('num1').value);
@@ -115,9 +106,6 @@ if (dividiendo) {
         };
     })
 }
-
-
-let clasificando = document.getElementById('clasificar')
 
 if (clasificando) {
     clasificando.addEventListener("click", function(){
@@ -134,9 +122,6 @@ if (clasificando) {
     })
 }
 
-
-let verificaPar = document.getElementById('parVerifica')
-
 if (verificaPar){
     verificaPar.addEventListener("click",function(){
         let n1 = Number(document.getElementById('num1').value);
@@ -147,9 +132,6 @@ if (verificaPar){
         };
     })
 }
-
-
-let verificaEdad = document.getElementById('verificarEdad')
 
 if (verificaEdad){
     verificaEdad.addEventListener("click",function(){
@@ -168,9 +150,6 @@ if (verificaEdad){
     })
 }
 
-
-let comparacion = document.getElementById('comparar')
-
 if (comparacion){
     comparacion.addEventListener("click",function(){
         let n1 = Number(document.getElementById('num1').value);
@@ -186,3 +165,4 @@ if (n1===n2) {
         };      
     })
 }
+
