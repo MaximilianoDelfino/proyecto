@@ -15,6 +15,7 @@ let calcularTemp = document.getElementById('calcularTemp')
 let pagar = document.getElementById('pagar')
 let evaluar = document.getElementById('evaluar')
 let calculadora = document.getElementById('calculadora')
+let aplicarDescuento = document.getElementById('aplicaDesc')
 
  saludar?.addEventListener("click",function holaMundo(){
     alert("hola mundo");
@@ -197,11 +198,23 @@ calculadora?.addEventListener("click", function(){
             if (n2 === 0){
                 total = "Error";
             } else {
-                total = n1 / n2;
+                total = (n1 / n2);
+                total = total.toFixed(5);
             }
             break;
         default:
             total = "Introduzca una operacion";
     }
     document.getElementById("resultado").innerHTML = total;
+})
+
+aplicarDescuento?.addEventListener("click", function(){
+    let n1 = Number(document.getElementById('precio').value);
+    let n2 = Number(document.getElementById('descuento').value);
+    let total = n1 - (n1 * (n2 / 100));
+    if (n2 > 30){
+        document.getElementById('finalDesc').innerHTML = 'Su total es de: ' + total + ' ¡Una mega oferta!'
+    }else{
+        document.getElementById('finalDesc').innerHTML = 'Su total es de: ' + total + ' Oferta.'
+    };
 })
