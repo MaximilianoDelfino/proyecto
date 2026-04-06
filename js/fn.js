@@ -14,6 +14,7 @@ let calculoRectangulo = document.getElementById('periArea')
 let calcularTemp = document.getElementById('calcularTemp')
 let pagar = document.getElementById('pagar')
 let evaluar = document.getElementById('evaluar')
+let calculadora = document.getElementById('calculadora')
 
  saludar?.addEventListener("click",function holaMundo(){
     alert("hola mundo");
@@ -175,4 +176,32 @@ evaluar?.addEventListener("click", function(){
     } else {
         document.getElementById('numeroEvaluado').innerHTML = 'El número ' + num + ' no es válido.';
     }
+})
+
+calculadora?.addEventListener("click", function(){
+    let n1 = Number(document.getElementById('num1').value);
+    let n2 = Number(document.getElementById('num2').value);
+    let operador = document.getElementById('operacion');
+    let total = 0;
+    switch (operador.value){
+        case "suma":
+            total = n1 + n2;
+            break;
+        case "resta":
+            total = n1 - n2;
+            break;
+        case "multi":
+            total = n1 * n2;
+            break;
+        case "div": 
+            if (n2 === 0){
+                total = "Error";
+            } else {
+                total = n1 / n2;
+            }
+            break;
+        default:
+            total = "Introduzca una operacion";
+    }
+    document.getElementById("resultado").innerHTML = total;
 })
