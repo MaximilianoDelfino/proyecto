@@ -18,6 +18,7 @@ let calculadora = document.getElementById('calculadora')
 let aplicarDescuento = document.getElementById('aplicaDesc')
 let bisiesto = document.getElementById('esBisiesto')
 let calcularIva = document.getElementById('calcularIva') 
+let convertirSeg = document.getElementById('convertirSeg')
 
  saludar?.addEventListener("click",function holaMundo(){
     alert("hola mundo");
@@ -252,4 +253,18 @@ calcularIva?.addEventListener("click", function(){
         break;
     }
     };
+})
+
+convertirSeg?.addEventListener("click", function(){
+    let num = Number(document.getElementById('segundos').value);
+    let error = isNaN(num);
+    if (num > 0 && !error ){
+        let resto = num % 3600; 
+        let hora = num / 3600;
+        let min = resto / 60;
+        let sec = resto % 60;
+        document.getElementById('resultado').innerHTML = 'Equivale a: ' + Math.trunc(hora) + ' horas, ' + Math.trunc(min) + ' minutos y ' + Math.trunc(sec) + ' segundos';
+    }else{
+        document.getElementById('resultado').innerHTML = 'Error';
+    }
 })
