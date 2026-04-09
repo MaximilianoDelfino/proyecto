@@ -19,6 +19,7 @@ let aplicarDescuento = document.getElementById('aplicaDesc')
 let bisiesto = document.getElementById('esBisiesto')
 let calcularIva = document.getElementById('calcularIva') 
 let convertirSeg = document.getElementById('convertirSeg')
+let ingreso = document.getElementById('ingreso')
 
  saludar?.addEventListener("click",function holaMundo(){
     alert("hola mundo");
@@ -264,7 +265,21 @@ convertirSeg?.addEventListener("click", function(){
         let min = resto / 60;
         let sec = resto % 60;
         document.getElementById('resultado').innerHTML = 'Equivale a: ' + Math.trunc(hora) + ' horas, ' + Math.trunc(min) + ' minutos y ' + Math.trunc(sec) + ' segundos';
-    }else{
+    } else {
         document.getElementById('resultado').innerHTML = 'Error';
     }
+})
+
+ingreso?.addEventListener("click", function(){
+    let cont1 = document.getElementById('pass1').value;
+    let cont2 = document.getElementById('pass2').value;
+    if (cont1.length > 5){
+        if (cont1 === cont2) {
+            document.getElementById('resultado').innerHTML = 'Contraseña es válida.';
+        } else {
+            document.getElementById('resultado').innerHTML = 'Las contraseñas no coinciden.';
+        };
+    } else {
+        document.getElementById('resultado').innerHTML = 'Contraseña es demasiado corta, pruebe utilizando al menos 6 caracteres.';
+    };
 })
