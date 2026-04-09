@@ -20,6 +20,7 @@ let bisiesto = document.getElementById('esBisiesto')
 let calcularIva = document.getElementById('calcularIva') 
 let convertirSeg = document.getElementById('convertirSeg')
 let ingreso = document.getElementById('ingreso')
+let evaluarNota = document.getElementById('evaluarNota')
 
  saludar?.addEventListener("click",function holaMundo(){
     alert("hola mundo");
@@ -282,4 +283,36 @@ ingreso?.addEventListener("click", function(){
     } else {
         document.getElementById('resultado').innerHTML = 'Contraseña es demasiado corta, pruebe utilizando al menos 6 caracteres.';
     };
+})
+
+evaluarNota?.addEventListener("click", function(){
+    let notas = document.getElementById('nota').value;
+    let mensaje;
+    switch(notas){
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+            mensaje = 'Desaprobado';
+            break;
+        case "4":
+        case "5":
+            mensaje = 'Recuperatorio';
+            break;
+        case "6":
+        case "7":
+            mensaje = 'Aprobado';
+            break;
+        case "8":
+        case "9":
+            mensaje = 'Muy bueno>';
+            break;
+        case "10":
+            mensaje = 'Sobresaliente';
+            break;  
+        default:
+            mensaje = 'Invalido';
+            break;
+    };
+    document.getElementById('resultado').innerHTML = mensaje;
 })
