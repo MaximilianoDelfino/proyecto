@@ -42,8 +42,8 @@ fetch("https://thesimpsonsapi.com/api/characters")
 // .then(data => {
 //     let boton = document.getElementById('botonPersonaje');
 //     boton.addEventListener('click',function(){
-//         let personajeBuscado = document.getElementById('personajeNombre').value;
-//         let encontrado = data.results.find(personajeNombre => personajeNombre.name === personajeBuscado);
+//         let personajeBuscado = document.getElementById('personajeNombre').value.trim().toLowerCase();
+//         let encontrado = data.results.find(personajeNombre => personajeNombre.name.trim().toLowerCase() === personajeBuscado);
 //         if (encontrado === undefined) {
 //             document.getElementById("resultado").innerHTML = `<p> Personaje no encontrado </p>`;
 //         }else{
@@ -52,3 +52,64 @@ fetch("https://thesimpsonsapi.com/api/characters")
 //     });
 // })
 
+// .then(data => {
+//     let boton = document.getElementById('botonOficio');
+//     boton.addEventListener('click', function(){
+//         let ocupacionBuscada = document.getElementById('ocupacion').value.trim().toLowerCase();
+//         let encontrado = personaje => personaje.occupation.trim().toLowerCase() === ocupacionBuscada;
+//         let respuesta = data.results.some(encontrado);
+//         if (respuesta === false) {
+//             document.getElementById("resultado").innerHTML = `<p> No se encontró ninguno </p>`;
+//         }else{
+//             document.getElementById("resultado").innerHTML = ` <p> Sí, existe un personaje con esa ocupación</p>`;
+//         };
+//     });
+// })
+
+// .then(data =>{
+//     let ordenadosEdad = [...data.results].sort((a,b) => {
+//         let edad1 = parseInt(a.age);
+//         let edad2 = parseInt(b.age);
+//         return edad1 - edad2;
+//     });
+//     ordenadosEdad = ordenadosEdad.slice(0,5)
+//     ordenadosEdad.forEach(personaje => {
+//         document.getElementById("resultado").innerHTML += `<p>${personaje.name} - ${personaje.age}</p>`
+//     })
+// })
+
+// .then(data => {
+//     let ochoPersonajes = data.results.slice(0,8);
+//     let contenedor = document.getElementById("resultado");
+//     contenedor.innerHTML="";
+//     ochoPersonajes.forEach(personajes =>{
+//         let edad = personajes.age || "Desconocida";
+//         let ocupacion = personajes.occupation || "Desempleado / Desconocida";
+//         contenedor.innerHTML += `
+//         <div style="border: 1px solid gray; padding: 10px; margin: 5px; display: inline-block;">
+//         <img src="https://cdn.thesimpsonsapi.com/200${personajes.portrait_path}">
+//         <h3>${personajes.name}</h3>
+//         <p>${edad}</p>
+//         <p>${ocupacion}</p>
+//         </div>`
+//     })
+// })
+
+.then(data => {
+    let hombres = data.results.reduce((conteo,personaje) => {
+        if (personaje.gender === 'Male'){
+            return conteo + 1;
+        }else{
+            return conteo;
+        }
+    }, 0)
+    let mujeres = data.results.reduce((conteo,personaje) => {
+        if (personaje.gender === 'Female'){
+            return conteo + 1;
+        }else{
+            return conteo;
+        }
+    }, 0)
+    document.getElementById("resultadoH").innerHTML=`<p>Personajes de genero masculino: ${hombres}</p>`
+    document.getElementById("resultadoM").innerHTML=`<p>Personajes de genero femenino: ${mujeres}</p>`
+})
