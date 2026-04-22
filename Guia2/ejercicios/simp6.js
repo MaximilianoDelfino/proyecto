@@ -8,8 +8,8 @@ fetch("https://thesimpsonsapi.com/api/characters")
 .then(data => {
     let boton = document.getElementById('botonPersonaje');
     boton.addEventListener('click',function(){
-        let personajeBuscado = document.getElementById('personajeNombre').value.trim().toLowerCase();
-        let encontrado = data.results.find(personajeNombre => personajeNombre.name.trim().toLowerCase() === personajeBuscado);
+        let personajeBuscado = document.getElementById('personajeNombre').value.trim().toLowerCase();       // modifica el texto para eliminar espacios y mayusculas, asi me aseguro de que no haya que escribirlo de manera perfecta luego
+        let encontrado = data.results.find(personajeNombre => personajeNombre.name.trim().toLowerCase() === personajeBuscado);      // se hace lo mismo a la hora de comparar 
         if (encontrado === undefined) {
             document.getElementById("resultado").innerHTML = `<p> Personaje no encontrado </p>`;
         }else{

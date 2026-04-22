@@ -7,14 +7,14 @@ fetch("https://thesimpsonsapi.com/api/characters")
 
 .then(data => {
     let hombres = data.results.reduce((conteo,personaje) => {
-        if (personaje.gender === 'Male'){
+        if (personaje.gender === 'Male'){       // cuenta cuantos personajes de genero "male" hay
             return conteo + 1;
         }else{
             return conteo;
         }
     }, 0)
     let mujeres = data.results.reduce((conteo,personaje) => {
-        if (personaje.gender === 'Female'){
+        if (personaje.gender === 'Female'){     // cuenta cuantos personajes de genero "male" hay
             return conteo + 1;
         }else{
             return conteo;

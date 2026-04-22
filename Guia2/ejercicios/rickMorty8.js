@@ -8,14 +8,14 @@ fetch("https://rickandmortyapi.com/api/character")
 
 boton?.addEventListener("click",function(){
     let nombrePersonaje = document.getElementById("personajeNombre").value;
-    fetch(`https://rickandmortyapi.com/api/character?name=${nombrePersonaje}`)
+    fetch(`https://rickandmortyapi.com/api/character?name=${nombrePersonaje}`)      // busca la pagina del personaje por medio de su nombre en la URL
     .then(respuesta => respuesta.json())
     .then(data => {
         document.getElementById("resultado").innerHTML = "";
         data.results.forEach(element => {
             let personajeId = element.id;
-            document.getElementById("resultado").innerHTML += `<img src="https://rickandmortyapi.com/api/character/avatar/${personajeId}.jpeg">
-            <p>${nombrePersonaje} - ${element.status}</p>`
+            document.getElementById("resultado").innerHTML += `<img src="https://rickandmortyapi.com/api/character/avatar/${personajeId}.jpeg">     
+            <p>${nombrePersonaje} - ${element.status}</p>`      // imprime todas las imagenes unidas con esa ID asi como su personaje y estado correspondiente
         });
     })
 });

@@ -13,11 +13,11 @@ fetch("https://thesimpsonsapi.com/api/characters")
         let edad = personajes.age || "Desconocida";
         let ocupacion = personajes.occupation || "Desempleado / Desconocida";
         contenedor.innerHTML += `
-        <div style="border: 1px solid gray; padding: 10px; margin: 5px; display: inline-block;">
+        <div style="border: 1px solid gray; padding: 10px; margin: 5px; display: inline-block;">        
         <img src="https://cdn.thesimpsonsapi.com/200${personajes.portrait_path}">
         <h3>${personajes.name}</h3>
         <p>${edad}</p>
         <p>${ocupacion}</p>
-        </div>`
+        </div>`     // busca la imagen desde la API, le asigna un tamaño (obligatorio con esta api) y le asigna un diseño al marco
     })
 })

@@ -6,8 +6,8 @@ fetch("https://thesimpsonsapi.com/api/characters")
 })
 
 .then(data => {
-    let mujer = data.results.filter(data => data.gender === "Female")
-   let cantidad = mujer.length;
+    let mujer = data.results.filter(data => data.gender === "Female")       // filtra el array para que solo queden personajes femeninos
+   let cantidad = mujer.length;     // cuenta cuantos personajes femeninos hay 
     document.getElementById("cantidad").innerHTML = 'la cantidad de personajes femeninos es ' + cantidad;
     mujer.forEach(data => {
         document.getElementById("resultado").innerHTML += `<p>${data.name}</p>`;    

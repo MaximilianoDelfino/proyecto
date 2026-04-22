@@ -10,7 +10,7 @@ fetch("https://thesimpsonsapi.com/api/characters")
     boton.addEventListener('click', function(){
         let ocupacionBuscada = document.getElementById('ocupacion').value.trim().toLowerCase();
         let encontrado = personaje => personaje.occupation.trim().toLowerCase() === ocupacionBuscada;
-        let respuesta = data.results.some(encontrado);
+        let respuesta = data.results.some(encontrado);      // some compara la ocupacion buscada en encontrado y devuelve si existe o no un personaje con ella
         if (respuesta === false) {
             document.getElementById("resultado").innerHTML = `<p> No se encontró ninguno </p>`;
         }else{

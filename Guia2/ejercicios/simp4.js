@@ -8,6 +8,6 @@ fetch("https://thesimpsonsapi.com/api/characters")
 .then(data => {    
   let nombres = data.results;
   nombres.forEach(data => {
-        document.getElementById("resultado").innerHTML += `<p>${data.name} --- ${data.occupation} </p>`;    
+        document.getElementById("resultado").innerHTML += `<p>${data.name} --- ${data.occupation} </p>`;    // muestra todos los nombres en y ocupaciones de los personajes 
 });
 })

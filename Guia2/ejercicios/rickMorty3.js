@@ -1,4 +1,3 @@
-const boton = document.getElementById("boton")
 fetch("https://rickandmortyapi.com/api/character")
 .then(Response => Response.json())
 .then(data => {
@@ -7,10 +6,10 @@ fetch("https://rickandmortyapi.com/api/character")
 })
 
 .then (data => {
-    let personajesVivos = data.results.filter(data => data.status === "Alive");
-    let cantidadVivos = personajesVivos.length;
-    document.getElementById("resultado").innerHTML += `<p> Personajes vivos en esta página: ${cantidadVivos} </p>`
+    let personajesVivos = data.results.filter(data => data.status === "Alive");     // filtra los personajes para que solo aquellos Alive (vivos) permanezcan en el array
+    let cantidadVivos = personajesVivos.length;     // cuenta las posiciones del array para saber cuantos personajes vivos hay
+    document.getElementById("resultado").innerHTML += `<p> Personajes vivos en esta página: ${cantidadVivos} </p>`   // muestra la cantidad de personajes vivos
     personajesVivos.forEach(element => {
-       document.getElementById("resultado").innerHTML += `<p>${element.name} </p>`;
+       document.getElementById("resultado").innerHTML += `<p>${element.name} </p>`;     // nombra a los personajes vivos
     });
  })
