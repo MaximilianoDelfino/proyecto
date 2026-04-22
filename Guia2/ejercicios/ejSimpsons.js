@@ -7,12 +7,12 @@ fetch("https://thesimpsonsapi.com/api/characters")
 
 // .then(data => document.getElementById("resultado").innerHTML = data.results[0].name)
 
-// .then(data => {    
-//   let primerosCinco = data.results.slice(0,5);
-//   primerosCinco.forEach(data => {
-//   document.getElementById("resultado").innerHTML += `<p>${data.name}</p>`;    
-// });
-// })
+.then(data => {    
+  let primerosCinco = data.results.slice(0,5);
+  primerosCinco.forEach(data => {
+  document.getElementById("resultado").innerHTML += `<p>${data.name}</p>`;    
+});
+})
 
 // .then(data => {
 //     let mujer = data.results.filter(data => data.gender === "Female")
