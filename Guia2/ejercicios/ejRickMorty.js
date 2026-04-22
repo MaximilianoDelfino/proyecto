@@ -1,10 +1,10 @@
+const boton = document.getElementById("boton")
 fetch("https://rickandmortyapi.com/api/character")
 .then(Response => Response.json())
 .then(data => {
     console.log(data);
     return data;
 })
-const boton = document.getElementById("boton");
 // .then(data => document.getElementById("resultado").innerHTML = data.results[0].name)
 
 // .then(data => {
@@ -49,3 +49,14 @@ const boton = document.getElementById("boton");
 //     })
 // })
 
+.then(data => {
+    let ordenEpisodios = [...data.results].sort((a,b) => {
+        let episodios1 = a.episode.length;
+        let episodios2 = b.episode.length;
+        return episodios2 - episodios1;
+    });
+    ordenEpisodios.forEach(personajes => {
+        let cantEpisodios = personajes.episode.length;
+        document.getElementById("resultado").innerHTML += `<p>${personajes.name} aparece en ${cantEpisodios} episodios</p>`
+    })
+})
