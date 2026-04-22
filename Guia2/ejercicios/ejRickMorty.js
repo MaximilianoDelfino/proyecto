@@ -16,8 +16,17 @@ fetch("https://rickandmortyapi.com/api/character")
 
 // .then (data => {
 //     let personajesVivos = data.results.filter(data => data.status === "Alive");
+//     let cantidadVivos = personajesVivos.length;
+//     document.getElementById("resultado").innerHTML += `<p> Personajes vivos en esta página: ${cantidadVivos} </p>`
 //     personajesVivos.forEach(element => {
-//         document.getElementById("resultado").innerHTML += `<p> ${element.name} </p>`;
-//     })
-// })
+//        document.getElementById("resultado").innerHTML += `<p>${element.name} </p>`;
+//     });
+//  })
+
+// .then (data => {
+//     let personajesHumanos = data.results.filter(data => data.species == "Human");
+//     personajesHumanos.forEach(element => {
+//        document.getElementById("resultado").innerHTML += `<p>${element.name} - ${element.species} </p>`;
+//     });
+//  })
 
