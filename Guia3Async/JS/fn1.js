@@ -132,3 +132,32 @@ primerLocalstorage(); */
 }
 
 guardandoObjetos(); */
+
+/* const personajes = []
+g
+async function obtenerConCache(id) {
+  const clave = `personaje_${id}`;
+  const guardado = localStorage.getItem(clave);
+  if (guardado !== null ){
+    const personajeParse = JSON.parse(guardado)
+    console.log(`${personajeParse.name} fue recuperado de la cache`);
+    return;
+  }
+  try {
+    console.log("Buscando personaje (",id,") en la API");
+    const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+    if (!res.ok) {
+      throw new Error("No se pudo obtener el personaje");
+    };
+    let auxiliar = await res.json();
+    localStorage.setItem(clave, JSON.stringify(auxiliar));
+    personajes.push(auxiliar);
+    console.log(`${auxiliar.name} fue recuperado de la API y guardado en cache`);
+  }catch (error){
+    console.log("Error:", error.message);
+  }
+}
+obtenerConCache(2);
+obtenerConCache(1);
+obtenerConCache(3);
+obtenerConCache(4); */
