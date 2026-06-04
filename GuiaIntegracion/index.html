@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>Registrate</h1>
-    <div class="pantalla">
+    <div id="inicio" class="pantalla">
         <button id="btnReg">Registrase</button>
         <button id="btnIng">Ingresar</button>
     </div>
@@ -27,6 +27,7 @@
         <br>
         <label for="contraReg">Elige tu nueva contraseña: </label>
         <input type="password" id="contraReg" placeholder="****" autocomplete="off">
+        <button id="btnRegistro">Registrarse</button>
     </div>
     <div id="ingreso" class="oculta">
         <h1>Ingrese sus datos</h1>
@@ -35,51 +36,85 @@
         <br>
         <label for="contraLog">Contraseña: </label>
         <input type="password" id="contraLog" placeholder="****" autocomplete="off">
+        <button id="btnIngreso">Ingreso</button>
+    </div>
+    <div id="galeria" class="oculta">
+
     </div>
     <script>
-        const btnReg = document.getElementById('btnReg')
-        const btnIng = document.getElementById('btnIng')
+        const btnPantallaReg = document.getElementById('btnReg')
+        const btnPantallaIng = document.getElementById('btnIng')
         
         const registro = document.getElementById('registro')
         const ingreso = document.getElementById('ingreso')
+        const inicio = document.getElementById('inicio')
+        const galeria = document.getElementById('galeria')
 
-        btnReg.addEventListener('click',() =>{
+        btnPantallaReg.addEventListener('click',() =>{
             registro.classList.remove('oculta');
             ingreso.classList.add('oculta');
         })
-        btnIng.addEventListener('click',() =>{
+        btnPantallaIng.addEventListener('click',() =>{
             ingreso.classList.remove('oculta');
             registro.classList.add('oculta');
         })
+
+        let registroCuentas = JSON.parse(localStorage.getItem("cuenta")) || [];
 
         let nombre = ""
         let contrasena = ""
 
         const introNom = document.getElementById("nombreLog")
         const introCon = document.getElementById("contraLog")
+        const btnIng = document.getElementById("btnIngreso")
 
         const regNom = document.getElementById("nombreReg")
         const regCon = document.getElementById("contraReg")
+        const btnReg = document.getElementById("btnRegistro")
 
-        regNom.addEventListener('keypress',leern => {
-            if (leern.key === 'Enter'){
-                nombre = regNom.value;
-            }
-        })
-        regCon.addEventListener('keypress',leerc => {
-            if (leerc.key === 'Enter'){
-                contrasena = regCon.value;
+        btnReg.addEventListener('click',() => {
+            nombre = regNom.value;
+            contrasena = regCon.value;
+            try{
+                let comprobar = registroCuentas.some(nomb => nomb.usuario === nombre);
+                if (comprobar){
+                    throw new Error("Ese nombre ya está registrado");
+                }
+                const nuevaCuenta ={
+                    usuario: nombre,
+                    contrasena: contrasena
+                }
+                registroCuentas.push(nuevaCuenta);
+                localStorage.setItem('cuenta',JSON.stringify(registroCuentas));
+
+                console.log("se ha registrado con éxito!");
+
+                ingreso.classList.remove('oculta');
+                registro.classList.add('oculta');
+            }catch(error){
+                console.error("Error: ",error.message);
             }
         })
         
-        introNom.addEventListener('keypress',leern => {
-            if (leern.key === 'Enter'){
-                nombre = introNom.value;
-            }
-        })
-        introCon.addEventListener('keypress',leerc => {
-            if (leerc.key === 'Enter'){
-                contrasena = introCon.value;
+        btnIng.addEventListener('click',() => {
+            nombre = introNom.value;
+            contrasena = introCon.value;
+            try{
+                let comprobar = registroCuentas.find(nomb => nomb.usuario === nombre);
+                if (!comprobar){
+                    throw new Error("Ese usuario no existe");
+                }
+                if (comprobar.contrasena !== contrasena){
+                    throw new Error("Contraseña incorrecta");
+                }
+
+                console.log("se ha ingresado con éxito!");
+
+                ingreso.classList.add('oculta');
+                registro.classList.add('oculta');
+                inicio.classList.add('oculta');
+            }catch(error){
+                console.error("Error: ",error.message);
             }
         })
     </script>
