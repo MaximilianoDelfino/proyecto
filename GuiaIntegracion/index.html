@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .oculta{
+            display:none;
+        }
+        .pantalla{
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registrate</h1>
+    <div class="pantalla">
+        <button id="btnReg">Registrase</button>
+        <button id="btnIng">Ingresar</button>
+    </div>
+    <div id="registro" class="oculta">
+        <h1>Registro</h1>
+
+        <label for="nombreReg">¿Cómo quieres nombrarte?: </label>
+        <input type="text" id="nombreReg" placeholder="tu nombre acá" autocomplete="off">
+        <br>
+        <label for="contraReg">Elige tu nueva contraseña: </label>
+        <input type="password" id="contraReg" placeholder="****" autocomplete="off">
+    </div>
+    <div id="ingreso" class="oculta">
+        <h1>Ingrese sus datos</h1>
+        <label for="nombreLog">Nombre: </label>
+        <input type="text" id="nombreLog" placeholder="tu nombre acá" autocomplete="off">
+        <br>
+        <label for="contraLog">Contraseña: </label>
+        <input type="password" id="contraLog" placeholder="****" autocomplete="off">
+    </div>
+    <script>
+        const btnReg = document.getElementById('btnReg')
+        const btnIng = document.getElementById('btnIng')
+        
+        const registro = document.getElementById('registro')
+        const ingreso = document.getElementById('ingreso')
+
+        btnReg.addEventListener('click',() =>{
+            registro.classList.remove('oculta');
+            ingreso.classList.add('oculta');
+        })
+        btnIng.addEventListener('click',() =>{
+            ingreso.classList.remove('oculta');
+            registro.classList.add('oculta');
+        })
+
+        let nombre = ""
+        let contrasena = ""
+
+        const introNom = document.getElementById("nombreLog")
+        const introCon = document.getElementById("contraLog")
+
+        const regNom = document.getElementById("nombreReg")
+        const regCon = document.getElementById("contraReg")
+
+        regNom.addEventListener('keypress',leern => {
+            if (leern.key === 'Enter'){
+                nombre = regNom.value;
+            }
+        })
+        regCon.addEventListener('keypress',leerc => {
+            if (leerc.key === 'Enter'){
+                contrasena = regCon.value;
+            }
+        })
+        
+        introNom.addEventListener('keypress',leern => {
+            if (leern.key === 'Enter'){
+                nombre = introNom.value;
+            }
+        })
+        introCon.addEventListener('keypress',leerc => {
+            if (leerc.key === 'Enter'){
+                contrasena = introCon.value;
+            }
+        })
+    </script>
+</body>
+</html>
