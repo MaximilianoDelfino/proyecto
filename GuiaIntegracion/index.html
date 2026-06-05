@@ -11,6 +11,18 @@
         .pantalla{
             padding: 20px;
         }
+        .divida{
+            display:flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .columna{
+            width: 50%;
+            padding: 15px;
+        }
     </style>
 </head>
 <body>
@@ -38,17 +50,41 @@
         <input type="password" id="contraLog" placeholder="****" autocomplete="off">
         <button id="btnIngreso">Ingreso</button>
     </div>
-    <div id="galeria" class="oculta">
-
+    <div id="pantallaSeleccion" class="pantalla oculta">
+        <label for="selectAPI">¿Con qué APIs desea interactuar?</label>
+        <select id="selectAPI">
+            <option value="" disabled selected></option>
+            <option value="1">Simpsons</option>
+            <option value="2">Rick and Morty</option>
+            <option value="3">Ambos</option>
+        </select>
+        <div id="galeria" class="divida oculta">
+            <div id="columnaRick" class="colmumna oculta">
+                <label for="buscadorRick">Busque su personaje de Rick and Morty (use ID)</label>
+                <input type="number" id="buscadorRick"></input>
+                <button id="btnRick">Enter</button>
+                <p id="personajesRick"></p>
+            </div>
+            <div id="columnaSimpson" class="colmumna oculta">
+                <label for="buscadorSimp">Busque su personaje de los Simpsons (use ID)</label>
+                <input type="number" id="buscadorSimp"></input>
+                <p id="personajesSimp"></p>
+                <button id="btnSimp">Enter</button>
+            </div>
+        </div>
     </div>
     <script>
         const btnPantallaReg = document.getElementById('btnReg')
         const btnPantallaIng = document.getElementById('btnIng')
-        
+
         const registro = document.getElementById('registro')
         const ingreso = document.getElementById('ingreso')
         const inicio = document.getElementById('inicio')
+        const pantallaSeleccion = document.getElementById('pantallaSeleccion')
         const galeria = document.getElementById('galeria')
+
+        const coluRick = document.getElementById('columnaRick')
+        const coluSimp = document.getElementById('columnaSimpson')
 
         btnPantallaReg.addEventListener('click',() =>{
             registro.classList.remove('oculta');
@@ -67,10 +103,13 @@
         const introNom = document.getElementById("nombreLog")
         const introCon = document.getElementById("contraLog")
         const btnIng = document.getElementById("btnIngreso")
+        const selApi = document.getElementById("selectAPI")
 
         const regNom = document.getElementById("nombreReg")
         const regCon = document.getElementById("contraReg")
         const btnReg = document.getElementById("btnRegistro")
+        const btnRick = document.getElementById('btnRick');
+        const btnSimp = document.getElementById('btnSimp');
 
         btnReg.addEventListener('click',() => {
             nombre = regNom.value;
@@ -112,11 +151,62 @@
 
                 ingreso.classList.add('oculta');
                 registro.classList.add('oculta');
-                inicio.classList.add('oculta');
+                pantallaSeleccion.classList.remove('oculta');
+                
             }catch(error){
                 console.error("Error: ",error.message);
             }
         })
+
+        selApi.addEventListener('change', async () =>{
+            galeria.classList.remove('oculta');
+            if (selApi.value === "1"){
+                coluRick.classList.add('oculta');
+                coluSimp.classList.remove('oculta');
+            }
+            if (selApi.value === "2"){
+                coluSimp.classList.add('oculta');
+                coluRick.classList.remove('oculta')
+            } 
+            if (selApi.value === "3"){
+                coluSimp.classList.remove('oculta');
+                coluRick.classList.remove('oculta')
+            }})
+        btnRick.addEventListener('click', async () => {
+            try{
+                let rickId = document.getElementById('buscadorRick').value
+                if (rickId !== ""){
+                const resRick = await fetch(`https://rickandmortyapi.com/api/character/${rickId}`);
+                if (!resRick.ok){
+                    throw new Error('API no respondió a tiempo o no se encontró personaje');
+                }
+                const dataRick = await resRick.json();
+                document.getElementById('personajesRick').innerHTML += `<h2>${dataRick.name}</h2><br><br>
+                <img src="${dataRick.image}">
+                <h4>${dataRick.status}<h4>
+                <h4>${dataRick.species}<h4>`;}
+            }catch(error){
+                console.error(error.message)
+            }})
+        btnSimp.addEventListener('click', async () => {
+            try{
+                let simpId = document.getElementById('buscadorSimp').value
+                if (simpId !== ""){
+                const resSimp = await fetch(`https://thesimpsonsapi.com/api/characters/${simpId}`);
+                if (!resSimp.ok){
+                    throw new Error('API no respondió a tiempo o no se encontró personaje');
+                }
+                const dataSimp = await resSimp.json();
+                document.getElementById('personajesSimp').innerHTML += `<h2>${dataSimp.name}</h2><br><br>
+                <img src="https://cdn.thesimpsonsapi.com/200${dataSimp.portrait_path}">
+                <h4>${dataSimp.gender}<h4>
+                <h4>${dataSimp.occupation}<h4>`;} 
+            }catch(error){
+                console.error(error.message)
+            }
+        });
+
+         
     </script>
 </body>
 </html>
