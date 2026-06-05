@@ -97,7 +97,7 @@
                 <button id="btnRick">Enter</button>
 
                 <p id="estadoCargaRick"></p>
-                <p id="personajesRick"></p>
+                <div id="personajesRick"></div>
             </div>
 
             <div id="columnaSimpson" class="columna oculta">
@@ -106,7 +106,7 @@
                 <button id="btnSimp">Enter</button>
 
                 <p id="estadoCargaSimp"></p>
-                <p id="personajesSimp"></p>
+                <div id="personajesSimp"></div>
             </div>
             <div id="columnaVer" class="columna oculta">
                 <h2>¿Qué desea ver?</h2>
@@ -117,6 +117,7 @@
                     <button id="desconocido">Estado desconocido</button>
                     <button id="ordAz">Ordenados A-Z</button>
                     <button id="ordZa">Ordenados Z-A</button>
+                    <button id="favoritos">Favoritos</button>
                 </div>
 
                 <p id="mostrador"></p>
@@ -168,6 +169,8 @@
         const btnIng = document.getElementById("btnIngreso")
         const selApi = document.getElementById("selectAPI")
         const regArray = document.getElementById("regArray")
+        const lectorBtnRick = document.getElementById('personajesRick');
+        const lectorBtnSimp = document.getElementById('personajesSimp');
 
         const regNom = document.getElementById("nombreReg")
         const regCon = document.getElementById("contraReg")
@@ -190,7 +193,9 @@
                 }
                 const nuevaCuenta ={
                     usuario: nombre,
-                    contrasena: contrasena
+                    contrasena: contrasena,
+                    favoritosRick: [],
+                    favoritosSimp: []
                 }
                 registroCuentas.push(nuevaCuenta);
                 localStorage.setItem('cuenta',JSON.stringify(registroCuentas));
@@ -218,10 +223,14 @@
 
                 console.log("se ha ingresado con éxito!");
 
+                if (!comprobar.favoritos){
+                    comprobar.favoritos = []
+                    localStorage.setItem('cuenta', JSON.stringify(registroCuentas));;
+                }
+
                 ingreso.classList.add('oculta');
                 registro.classList.add('oculta');
                 pantallaSeleccion.classList.remove('oculta');
-                
             }catch(error){
                 console.error("Error: ",error.message);
             }
@@ -335,7 +344,8 @@
                 <img width=200px; height=200px; src="${pj.imagen}">
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
-                <h4>${pj.detalle}</h4>`;
+                <h4>${pj.detalle}</h4>
+                <button class="btn" data-id="${pj.id}">Mandar a favoritos</button>`;
                 }
             }catch(error){
                 console.error(error.message)
@@ -404,15 +414,15 @@
                 })
                 document.getElementById('univ').innerHTML = uniCant;
 
-                console.log(arrayPj);
-
                 document.getElementById('estadoCargaSimp').innerHTML = "";
 
                 document.getElementById('personajesSimp').innerHTML += `<h2>${pj.nombre}</h2><br><br>
                 <img src=${pj.imagen}>
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
-                <h4>${pj.detalle}</h4>`;} 
+                <h4>${pj.detalle}</h4>
+                <button class="btn" data-id="${pj.id}">Mandar a favoritos</button>`;
+            } 
             }catch(error){
                 console.error(error.message)
             }
@@ -423,18 +433,16 @@
         const btnDesc = document.getElementById('desconocido')
         const btnAz = document.getElementById('ordAz')
         const btnZa = document.getElementById('ordZa')
-
-
-        let muestra = "";
+        const btnFav = document.getElementById('favoritos')
 
         btnVivo.addEventListener('click', async () =>{
-            muestra = ""
+            let muestra = "";
             cond = (estado) => estado.estado === "Alive";
             ord = arrayPj.filter(cond);
             ord.forEach(pj =>{
                 muestra += `
                 <h2>${pj.nombre}</h2><br><br>
-                <img width="200px" height="200px" src=${pj.imagen}>
+                <img width="200px" height="200px" src="${pj.imagen}">
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
                 <h4>${pj.detalle}</h4>
@@ -444,13 +452,13 @@
         })
 
         btnMuerto.addEventListener('click', async () =>{
-            muestra = ""
+            let muestra = "";
             cond = (estado) => estado.estado === "Dead" || estado.estado === "Deceased";
             ord = arrayPj.filter(cond);
             ord.forEach(pj =>{
                 muestra += `
                 <h2>${pj.nombre}</h2><br><br>
-                <img width="200px" height="200px" src=${pj.imagen}>
+                <img width="200px" height="200px" src="${pj.imagen}">
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
                 <h4>${pj.detalle}</h4>
@@ -460,13 +468,13 @@
         })
 
         btnDesc.addEventListener('click', async () =>{
-            muestra = ""
+            let muestra = "";
             cond = (estado) => estado.estado === "unknown" || estado.estado === "Unknown";
             ord = arrayPj.filter(cond);
             ord.forEach(pj =>{
                 muestra += `
                 <h2>${pj.nombre}</h2><br><br>
-                <img width="200px" height="200px" src=${pj.imagen}>
+                <img width="200px" height="200px" src="${pj.imagen}">
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
                 <h4>${pj.detalle}</h4>
@@ -476,14 +484,14 @@
         })
 
         btnAz.addEventListener('click', async () =>{
-            muestra = ""
+            let muestra = "";
             ord = arrayPj.sort(function(a,b){
                 return a.nombre.localeCompare(b.nombre);
             });
             ord.forEach(pj =>{
                 muestra += `
                 <h2>${pj.nombre}</h2><br><br>
-                <img width="200px" height="200px" src=${pj.imagen}>
+                <img width="200px" height="200px" src="${pj.imagen}">
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
                 <h4>${pj.detalle}</h4>
@@ -493,18 +501,66 @@
         })
 
         btnZa.addEventListener('click', async () =>{
-            muestra = ""
+            let muestra = "";
             ord = arrayPj.sort(function(a,b){
                 return b.nombre.localeCompare(a.nombre);
             });
             ord.forEach(pj =>{
                 muestra += `
                 <h2>${pj.nombre}</h2><br><br>
-                <img width="200px" height="200px" src=${pj.imagen}>
+                <img width="200px" height="200px" src="${pj.imagen}">
                 <h4>${pj.estado}</h4>
                 <h4>${pj.genero}</h4>
-                <h4>${pj.detalle}</h4>
-                `
+                <h4>${pj.detalle}</h4>`;
+            })
+            document.getElementById('mostrador').innerHTML = muestra;
+        })
+
+        lectorBtnSimp.addEventListener('click',(boton) =>{
+            if (boton.target.classList.contains('btn')){
+                let idPj = boton.target.getAttribute('data-id');
+                let personajeGuardar = arrayPj.find(pj => pj.id === Number(idPj));
+                let aux = JSON.parse(localStorage.getItem('cuenta'));
+                let cuenta = aux.find((cuenta) => cuenta.usuario === introNom.value);
+                if (cuenta){
+                    cuenta.favoritosSimp.push(personajeGuardar);
+                    localStorage.setItem('cuenta',JSON.stringify(aux));
+                }
+            }
+        })
+
+        lectorBtnRick.addEventListener('click',(boton) =>{
+            if (boton.target.classList.contains('btn')){
+                let idPj = boton.target.getAttribute('data-id');
+                let personajeGuardar = arrayPj.find(pj => pj.id === Number(idPj));
+                let aux = JSON.parse(localStorage.getItem('cuenta'));
+                let cuenta = aux.find((cuenta) => cuenta.usuario === introNom.value);
+                if (cuenta){
+                    cuenta.favoritosRick.push(personajeGuardar);
+                    localStorage.setItem('cuenta',JSON.stringify(aux));
+                }
+            }
+        })
+
+        btnFav.addEventListener('click', async () =>{
+            let muestra = "";
+            let aux = JSON.parse(localStorage.getItem('cuenta'));
+            let cuenta = aux.find((cuenta) => cuenta.usuario === introNom.value)
+            cuenta.favoritosRick.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src="${pj.imagen}">
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>`;
+            })
+            cuenta.favoritosSimp.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src="${pj.imagen}">
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>`;
             })
             document.getElementById('mostrador').innerHTML = muestra;
         })
