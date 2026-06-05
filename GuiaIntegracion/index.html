@@ -4,13 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multiverso de Personajes</title>
+
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            
+            background-color: #1e1e1e; 
+            
+            color: #e0e0e0; 
+        }
+        
         .oculta{
             display:none;
         }
+
         .pantalla{
             padding: 20px;
         }
+
         .divida{
             display:flex;
             justify-content: space-between;
@@ -19,57 +30,107 @@
             padding: 20px;
             box-sizing: border-box;
         }
+
         .columna{
             width: 50%;
             padding: 15px;
+            background-color: #2d2d2d;
+            border: 1px solid #404040;
+        }
+
+        .botones{
+            display: flex;
+            gap: 10px;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
+
     <h1 style="text-align: center;">Multiverso de Personajes</h1>
-    <div id="inicio" class="pantalla">
+
+    <div id="inicio" class="botones">
         <button id="btnReg">Registrase</button>
         <button id="btnIng">Ingresar</button>
     </div>
+
     <div id="registro" class="oculta">
         <h1>Registro</h1>
 
         <label for="nombreReg">¿Cómo quieres nombrarte?: </label>
         <input type="text" id="nombreReg" placeholder="tu nombre acá" autocomplete="off">
+
         <br>
+
         <label for="contraReg">Elige tu nueva contraseña: </label>
         <input type="password" id="contraReg" placeholder="****" autocomplete="off">
         <button id="btnRegistro">Registrarse</button>
     </div>
     <div id="ingreso" class="oculta">
         <h1>Ingrese sus datos</h1>
+
         <label for="nombreLog">Nombre: </label>
         <input type="text" id="nombreLog" placeholder="tu nombre acá" autocomplete="off">
+
         <br>
+
         <label for="contraLog">Contraseña: </label>
         <input type="password" id="contraLog" placeholder="****" autocomplete="off">
         <button id="btnIngreso">Ingreso</button>
     </div>
     <div id="pantallaSeleccion" class="pantalla oculta">
         <label for="selectAPI">¿Con qué APIs desea interactuar?</label>
+
         <select id="selectAPI">
             <option value="" disabled selected></option>
             <option value="1">Simpsons</option>
             <option value="2">Rick and Morty</option>
             <option value="3">Ambos</option>
+            <option value="4">Ver personajes cargados</option>
+            <option value="5">Estadísticas</option>
         </select>
+
         <div id="galeria" class="divida oculta">
-            <div id="columnaRick" class="colmumna oculta">
+            <div id="columnaRick" class="columna oculta">
                 <label for="buscadorRick">Busque su personaje de Rick and Morty (use ID)</label>
                 <input type="number" id="buscadorRick"></input>
                 <button id="btnRick">Enter</button>
+
+                <p id="estadoCargaRick"></p>
                 <p id="personajesRick"></p>
             </div>
-            <div id="columnaSimpson" class="colmumna oculta">
+
+            <div id="columnaSimpson" class="columna oculta">
                 <label for="buscadorSimp">Busque su personaje de los Simpsons (use ID)</label>
                 <input type="number" id="buscadorSimp"></input>
-                <p id="personajesSimp"></p>
                 <button id="btnSimp">Enter</button>
+
+                <p id="estadoCargaSimp"></p>
+                <p id="personajesSimp"></p>
+            </div>
+            <div id="columnaVer" class="columna oculta">
+                <h2>¿Qué desea ver?</h2>
+
+                <div class="botones">
+                    <button id="vivo">Personajes vivos</button>
+                    <button id="muerto">Personajes muertos</button>
+                    <button id="desconocido">Estado desconocido</button>
+                    <button id="ordAz">Ordenados A-Z</button>
+                    <button id="ordZa">Ordenados Z-A</button>
+                </div>
+
+                <p id="mostrador"></p>
+            </div>
+            <div id="columnaStats" class="columna oculta">
+                <h2>Estadísticas<h2>
+                <br>
+                <p id="cant"></p>
+                <br>
+                <p id="gene"></p>
+                <br>
+                <p id="estados"></p>
+                <br>
+                <p id="univ"></p>
             </div>
         </div>
     </div>
@@ -85,6 +146,8 @@
 
         const coluRick = document.getElementById('columnaRick')
         const coluSimp = document.getElementById('columnaSimpson')
+        const coluVer = document.getElementById('columnaVer')
+        const coluStat = document.getElementById('columnaStats')
 
         btnPantallaReg.addEventListener('click',() =>{
             registro.classList.remove('oculta');
@@ -95,7 +158,7 @@
             registro.classList.add('oculta');
         })
 
-        let registroCuentas = JSON.parse(localStorage.getItem("cuenta")) || [];
+        let registroCuentas = JSON.parse(localStorage.getItem("cuenta")) || []
 
         let nombre = ""
         let contrasena = ""
@@ -104,12 +167,18 @@
         const introCon = document.getElementById("contraLog")
         const btnIng = document.getElementById("btnIngreso")
         const selApi = document.getElementById("selectAPI")
+        const regArray = document.getElementById("regArray")
 
         const regNom = document.getElementById("nombreReg")
         const regCon = document.getElementById("contraReg")
         const btnReg = document.getElementById("btnRegistro")
-        const btnRick = document.getElementById('btnRick');
-        const btnSimp = document.getElementById('btnSimp');
+        const btnRick = document.getElementById("btnRick")
+        const btnSimp = document.getElementById("btnSimp")
+
+        const arrayPj = []
+
+        let cond = {};
+        let ord = [];
 
         btnReg.addEventListener('click',() => {
             nombre = regNom.value;
@@ -163,50 +232,282 @@
             if (selApi.value === "1"){
                 coluRick.classList.add('oculta');
                 coluSimp.classList.remove('oculta');
+                coluStat.classList.add('oculta');
+                coluVer.classList.add('oculta');
             }
+
             if (selApi.value === "2"){
                 coluSimp.classList.add('oculta');
-                coluRick.classList.remove('oculta')
+                coluRick.classList.remove('oculta');
+                coluStat.classList.add('oculta');
+                coluVer.classList.add('oculta');
             } 
+
             if (selApi.value === "3"){
                 coluSimp.classList.remove('oculta');
-                coluRick.classList.remove('oculta')
-            }})
+                coluRick.classList.remove('oculta');
+                coluStat.classList.add('oculta');
+                coluVer.classList.add('oculta');
+            }
+            
+            if (selApi.value === "4"){
+                coluSimp.classList.add('oculta');
+                coluRick.classList.add('oculta');
+                coluStat.classList.add('oculta');
+                coluVer.classList.remove('oculta');
+            }
+            
+            if (selApi.value === "5"){
+                coluSimp.classList.add('oculta');
+                coluRick.classList.add('oculta');
+                coluStat.classList.remove('oculta');
+                coluVer.classList.add('oculta');
+            }
+        })
+
         btnRick.addEventListener('click', async () => {
             try{
                 let rickId = document.getElementById('buscadorRick').value
+                document.getElementById('estadoCargaRick').innerHTML = "Buscando personaje...";
+
                 if (rickId !== ""){
                 const resRick = await fetch(`https://rickandmortyapi.com/api/character/${rickId}`);
+
                 if (!resRick.ok){
                     throw new Error('API no respondió a tiempo o no se encontró personaje');
                 }
-                const dataRick = await resRick.json();
-                document.getElementById('personajesRick').innerHTML += `<h2>${dataRick.name}</h2><br><br>
-                <img src="${dataRick.image}">
-                <h4>${dataRick.status}<h4>
-                <h4>${dataRick.species}<h4>`;}
+
+                const aux = await resRick.json();
+
+                let pj ={
+                    id: aux.id,
+                    nombre: aux.name,
+                    imagen: aux.image,
+                    estado: aux.status,
+                    genero: aux.gender,
+                    detalle: aux.species,
+                    origen: "rickandmorty"
+                }
+
+                let repetido = arrayPj.some(repetido => repetido.id === pj.id && repetido.origen === pj.origen);
+
+                if (!repetido){
+                    arrayPj.push(pj);
+                }
+
+                let cant = arrayPj.length;
+                document.getElementById('cant').innerHTML = cant + ' personajes fueron registrados en esta sesión.';
+
+                const contEstado = arrayPj.reduce((acum, pj) => {
+                    acum[pj.estado] = (acum[pj.estado] || 0) + 1;
+                    return acum;
+                }, {});
+                let estadoCant = '';
+                Object.entries(contEstado).forEach(([estado,cant])=>{
+                    estadoCant += `<p>${estado}: ${cant} personajes</p>`
+                })
+                document.getElementById('estados').innerHTML = estadoCant;
+
+                const contGene = arrayPj.reduce((acum, pj) => {
+                    acum[pj.genero] = (acum[pj.genero] || 0) + 1;
+                    return acum;
+                }, {});
+                let genCant = '';
+                Object.entries(contGene).forEach(([gen,cant])=>{
+                    genCant += `<p>${gen}: ${cant} personajes</p>`
+                })
+                document.getElementById('gene').innerHTML = genCant;
+
+                const contUni = arrayPj.reduce((acum, pj) => {
+                    acum[pj.origen] = (acum[pj.origen] || 0) + 1;
+                    return acum;
+                }, {});
+                let uniCant = '';
+                Object.entries(contUni).forEach(([uni,cant])=>{
+                    uniCant += `<p>Universo ${uni}: ${cant} personajes</p>`
+                })
+                document.getElementById('univ').innerHTML = uniCant;
+
+                console.log(arrayPj);
+                document.getElementById('estadoCargaRick').innerHTML = "";
+
+                document.getElementById('personajesRick').innerHTML += `<h2>${pj.nombre}</h2><br><br>
+                <img width=200px; height=200px; src="${pj.imagen}">
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>`;
+                }
             }catch(error){
                 console.error(error.message)
             }})
+
         btnSimp.addEventListener('click', async () => {
             try{
                 let simpId = document.getElementById('buscadorSimp').value
+                document.getElementById('estadoCargaSimp').innerHTML = "Buscando personaje...";
+
                 if (simpId !== ""){
                 const resSimp = await fetch(`https://thesimpsonsapi.com/api/characters/${simpId}`);
+
                 if (!resSimp.ok){
                     throw new Error('API no respondió a tiempo o no se encontró personaje');
                 }
-                const dataSimp = await resSimp.json();
-                document.getElementById('personajesSimp').innerHTML += `<h2>${dataSimp.name}</h2><br><br>
-                <img src="https://cdn.thesimpsonsapi.com/200${dataSimp.portrait_path}">
-                <h4>${dataSimp.gender}<h4>
-                <h4>${dataSimp.occupation}<h4>`;} 
+
+                const aux = await resSimp.json();
+
+                let pj ={
+                    id: aux.id,
+                    nombre: aux.name,
+                    imagen: `https://cdn.thesimpsonsapi.com/200${aux.portrait_path}`,
+                    estado: aux.status,
+                    genero: aux.gender,
+                    detalle: aux.occupation,
+                    origen: "simpson"
+                }
+
+                let repetido = arrayPj.some(repetido => repetido.id === pj.id && repetido.origen === pj.origen);
+
+                if (!repetido){
+                    arrayPj.push(pj);
+                }
+
+                let cant = arrayPj.length;
+                document.getElementById('cant').innerHTML = cant + ' personajes fueron registrados en esta sesión.';
+
+                const contEstado = arrayPj.reduce((acum, pj) => {
+                    acum[pj.estado] = (acum[pj.estado] || 0) + 1;
+                    return acum;
+                }, {});
+                let estadoCant = '';
+                Object.entries(contEstado).forEach(([estado,cant])=>{
+                    estadoCant += `<p>${estado}: ${cant} personajes</p>`
+                })
+                document.getElementById('estados').innerHTML = estadoCant;
+
+                const contGene = arrayPj.reduce((acum, pj) => {
+                    acum[pj.genero] = (acum[pj.genero] || 0) + 1;
+                    return acum;
+                }, {});
+                let genCant = '';
+                Object.entries(contGene).forEach(([gen,cant])=>{
+                    genCant += `<p>${gen}: ${cant} personajes</p>`
+                })
+                document.getElementById('gene').innerHTML = genCant;
+
+                const contUni = arrayPj.reduce((acum, pj) => {
+                    acum[pj.origen] = (acum[pj.origen] || 0) + 1;
+                    return acum;
+                }, {});
+                let uniCant = '';
+                Object.entries(contUni).forEach(([uni,cant])=>{
+                    uniCant += `<p>Universo ${uni}: ${cant} personajes</p>`
+                })
+                document.getElementById('univ').innerHTML = uniCant;
+
+                console.log(arrayPj);
+
+                document.getElementById('estadoCargaSimp').innerHTML = "";
+
+                document.getElementById('personajesSimp').innerHTML += `<h2>${pj.nombre}</h2><br><br>
+                <img src=${pj.imagen}>
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>`;} 
             }catch(error){
                 console.error(error.message)
             }
         });
 
-         
+        const btnVivo = document.getElementById('vivo')
+        const btnMuerto = document.getElementById('muerto')
+        const btnDesc = document.getElementById('desconocido')
+        const btnAz = document.getElementById('ordAz')
+        const btnZa = document.getElementById('ordZa')
+
+
+        let muestra = "";
+
+        btnVivo.addEventListener('click', async () =>{
+            muestra = ""
+            cond = (estado) => estado.estado === "Alive";
+            ord = arrayPj.filter(cond);
+            ord.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src=${pj.imagen}>
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>
+                `
+            })
+            document.getElementById('mostrador').innerHTML = muestra;
+        })
+
+        btnMuerto.addEventListener('click', async () =>{
+            muestra = ""
+            cond = (estado) => estado.estado === "Dead" || estado.estado === "Deceased";
+            ord = arrayPj.filter(cond);
+            ord.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src=${pj.imagen}>
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>
+                `
+            })
+            document.getElementById('mostrador').innerHTML = muestra;
+        })
+
+        btnDesc.addEventListener('click', async () =>{
+            muestra = ""
+            cond = (estado) => estado.estado === "unknown" || estado.estado === "Unknown";
+            ord = arrayPj.filter(cond);
+            ord.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src=${pj.imagen}>
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>
+                `
+            })
+            document.getElementById('mostrador').innerHTML = muestra;
+        })
+
+        btnAz.addEventListener('click', async () =>{
+            muestra = ""
+            ord = arrayPj.sort(function(a,b){
+                return a.nombre.localeCompare(b.nombre);
+            });
+            ord.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src=${pj.imagen}>
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>
+                `
+            })
+            document.getElementById('mostrador').innerHTML = muestra;
+        })
+
+        btnZa.addEventListener('click', async () =>{
+            muestra = ""
+            ord = arrayPj.sort(function(a,b){
+                return b.nombre.localeCompare(a.nombre);
+            });
+            ord.forEach(pj =>{
+                muestra += `
+                <h2>${pj.nombre}</h2><br><br>
+                <img width="200px" height="200px" src=${pj.imagen}>
+                <h4>${pj.estado}</h4>
+                <h4>${pj.genero}</h4>
+                <h4>${pj.detalle}</h4>
+                `
+            })
+            document.getElementById('mostrador').innerHTML = muestra;
+        })
     </script>
 </body>
 </html>
