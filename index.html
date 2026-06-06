@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcial</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            
+            background-color: #1e1e1e; 
+            
+            color: #e0e0e0; 
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h4>El primer pokemon que inicia con Z es: </h4>
+        <p id="pokemonZ"></p>
+        <button id="mostrarZ">---</button>
+        <br>
+        <h4>Pokemons en mayúsculas</h4>
+        <p id="pokemonMayu"></p>
+        <button id="mostrarMayu">---</button>
+        <br>
+        <h4>Quitar último y mostrarlo</h4>
+        <p id="pokeUlt"></p>
+        <button id="mostrarUlt">---</button>
+        <br>
+        <h4>Propiedades Charizard</h4>
+        <p id="propiedades"></p>
+        <button id="mostrarProp">---</button>
+        <br>
+        <h4>Sumar al array</h4>
+        <button id="mostrarHis">---</button>
+        <p id="historialAcu"></p>     
+        <br>
+        <h4>Entradas en el historial</h4>
+        <p id="largoHis"></p>
+        <button id="mostrarLar">---</button>
+    </div>
+    <script>
+        let btnZ = document.getElementById('mostrarZ')
+        let btnMay = document.getElementById('mostrarMayu')
+        let btnUlt = document.getElementById('mostrarUlt')
+        let btnPro = document.getElementById('mostrarProp')
+        let btnHis = document.getElementById('mostrarHis')
+        let btnLar = document.getElementById('mostrarLar')
+        const historial = JSON.parse(localStorage.getItem("historial")) || [];
+        
+        btnZ.addEventListener('click', async()=>{
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=151`);
+            const data = await res.json();
+
+            let pokez = data.results.find(poke => poke.name == "zubat");
+
+            document.getElementById('pokemonZ').innerHTML = pokez.name;
+        })
+        
+        btnMay.addEventListener('click', ()=>{
+            fetch('https://pokeapi.co/api/v2/pokemon?limit=20')
+            .then(response => response.json())
+            .then(data=>{
+                let pokeNom = data.results.map(pokeN => pokeN.name)
+                let muestra ="";
+                pokeNom.forEach(element => {
+                    muestra += `
+                    <h5>${element.toUpperCase()}</h5>`
+                });
+                document.getElementById('pokemonMayu').innerHTML = muestra
+            })
+        })
+
+        btnUlt.addEventListener('click', async() =>{
+            let muestra = "";
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10`)
+            const data = await res.json();
+            let pokeNom = data.results.map(pokeN => pokeN.name)
+            let ultPoke = pokeNom.pop();
+            pokeNom.forEach(element => {
+                    muestra += `
+                    <h4>${element}</h4>`
+                });
+            document.getElementById('pokeUlt').innerHTML = muestra;
+            document.getElementById('pokeUlt').innerHTML += "el ultimo pokemon es " + ultPoke;
+        })
+
+        btnPro.addEventListener('click', async() =>{
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/charizard`);
+            const data = await res.json();
+
+            let contMove = true;
+            if (data.moves.length > 50){
+                contMove = true;
+            }else{
+                contMove = false;
+            }
+            let pokemon ={
+                nombreMayus: data.name.toUpperCase(),
+                especie: data.species.name,
+                masDe50Moves: contMove,
+                habilidad: data.abilities[0].ability.name
+            }
+            localStorage.setItem("charizard",JSON.stringify(pokemon));
+            let leerPoke = JSON.parse(localStorage.getItem("charizard"))
+            console.log(leerPoke)
+            document.getElementById('propiedades').innerHTML = `
+            <h4>Nombre en mayúscula: ${leerPoke.nombreMayus}</h4>
+            <h4>Especie: ${leerPoke.especie}</h4>
+            <h4>¿Tiene más de 50 moves?: ${leerPoke.masDe50Moves}</h4>
+            <h4>habilidad: ${leerPoke.habilidad}</h4>`
+        })
+        
+        btnHis.addEventListener('click', async() =>{
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/ditto`);
+            const data = await res.json();
+            let aux = data.name;
+            let muestra = "";
+            historial.push(aux)
+            historial.forEach(element => {
+                    muestra += `
+                    <h4>${element}</h4>`
+                });
+            document.getElementById('historialAcu').innerHTML=muestra;
+            localStorage.setItem("historial",JSON.stringify(historial))
+        })
+    
+        btnLar.addEventListener('click',() =>{
+            let historia = (JSON.parse(localStorage.getItem("historial")));
+            let largoHis = historia.length;
+            document.getElementById('largoHis').innerHTML="Hay " + largoHis + " entradas en el historial"
+        })
+    </script>
+</body>
+</html>
